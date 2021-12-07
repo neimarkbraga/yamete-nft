@@ -37,6 +37,8 @@ const updateCharacter = (data) => {
 
     app.use(express.static('./public'));
 
+    app.use(express.static('../webclient/build'));
+
     app.get('/metadata/characters', async (req, res, next) => {
       try {
         res.setHeader('Content-Type', 'application/json');
@@ -54,6 +56,12 @@ const updateCharacter = (data) => {
       } catch (e) {
         next(e);
       }
+    });
+
+    app.use(async (req, res, next) => {
+      const content = fs.readFileSync(`${__dirname}/../webclient/build/index.html`);
+      res.setHeader('Content-Type', 'text/html');
+      res.send(content);
     });
 
     const server = app.listen(88, () => {

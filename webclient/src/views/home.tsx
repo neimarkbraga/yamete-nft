@@ -88,7 +88,7 @@ const Home = () => {
               {characters.map(character => (
                 <AnimeCard
                   key={character.id}
-                  image={character.urls.image.replace('https://yamete.nftinity.xyz', 'http://localhost:88')}
+                  image={character.urls.image}
                   title={character.name}
                   owner={character.owner}
                   description={character.description}
