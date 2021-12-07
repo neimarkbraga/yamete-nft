@@ -9,7 +9,8 @@ import {
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slick from 'react-slick';
-import { AnimeCard } from '../components/cards';
+import { useNavigate } from 'react-router-dom';
+import AnimeCard from '../components/AnimeCard';
 import Character from '../models/Character';
 import { styled, keyframes } from '@mui/material/styles';
 
@@ -29,6 +30,8 @@ const Home = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const navigate = useNavigate();
 
   const loadCharacters = async () => {
     setCharacters(await Character.find());
@@ -92,6 +95,7 @@ const Home = () => {
                   title={character.name}
                   owner={character.owner}
                   description={character.description}
+                  onClick={() => navigate(`/${character.name}`)}
                 />
               ))}
             </Slick>

@@ -39,7 +39,7 @@ class Character implements ICharacter {
     return data.map(ic => new Character(ic));
   }
 
-  static async findById(id: string): Promise<Character|null> {
+  static async findById(id: number): Promise<Character|null> {
     const { data } = await Api.get<ICharacter|null>(`/metadata/characters/${id}`);
     return data ? new Character(data) : null;
   }
