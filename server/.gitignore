@@ -1,0 +1,12 @@
+.env
+
+characters.db.json
+
+node_modules
+node_modules/*
+
+smart_contract/build
+smart_contract/build/*
+
+smart_contract/deployments
+smart_contract/deployments/*

@@ -1,0 +1,62 @@
+[
+  {
+    "id": 0,
+    "owner": "0x0",
+    "name": "Emi",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ligula eros. Cras vel posuere nibh.",
+    "statement": "",
+    "urls": {
+      "profile": "https://yamete.nftinity.xyz/Emi",
+      "metadata": "https://yamete.nftinity.xyz/metadata/characters/0",
+      "image": "https://yamete.nftinity.xyz/assets/img/characters/Emi.png"
+    }
+  },
+  {
+    "id": 1,
+    "owner": "0x0",
+    "name": "Hana",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ligula eros. Cras vel posuere nibh.",
+    "statement": "",
+    "urls": {
+      "profile": "https://yamete.nftinity.xyz/Hana",
+      "metadata": "https://yamete.nftinity.xyz/metadata/characters/1",
+      "image": "https://yamete.nftinity.xyz/assets/img/characters/Hana.png"
+    }
+  },
+  {
+    "id": 2,
+    "owner": "0x0",
+    "name": "Mana",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ligula eros. Cras vel posuere nibh.",
+    "statement": "",
+    "urls": {
+      "profile": "https://yamete.nftinity.xyz/Mana",
+      "metadata": "https://yamete.nftinity.xyz/metadata/characters/2",
+      "image": "https://yamete.nftinity.xyz/assets/img/characters/Mana.png"
+    }
+  },
+  {
+    "id": 3,
+    "owner": "0x0",
+    "name": "Miku",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ligula eros. Cras vel posuere nibh.",
+    "statement": "",
+    "urls": {
+      "profile": "https://yamete.nftinity.xyz/Miku",
+      "metadata": "https://yamete.nftinity.xyz/metadata/characters/3",
+      "image": "https://yamete.nftinity.xyz/assets/img/characters/Miku.png"
+    }
+  },
+  {
+    "id": 4,
+    "owner": "0x0",
+    "name": "Yui",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget ligula eros. Cras vel posuere nibh.",
+    "statement": "",
+    "urls": {
+      "profile": "https://yamete.nftinity.xyz/Yui",
+      "metadata": "https://yamete.nftinity.xyz/metadata/characters/4",
+      "image": "https://yamete.nftinity.xyz/assets/img/characters/Yui.png"
+    }
+  }
+]
