@@ -61,6 +61,11 @@ const useMetaMask = () => {
     onboarding,
     connectWallet,
     selectedAddress,
+    getEthereumInstance: () => {
+      if (!window.ethereum)
+        throw new Error('MetaMask is not installed');
+      return window.ethereum;
+    },
     isMetaMaskInstalled: MetaMaskOnboarding.isMetaMaskInstalled(),
   };
 };

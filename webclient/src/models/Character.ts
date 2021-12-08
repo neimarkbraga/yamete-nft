@@ -43,6 +43,11 @@ class Character implements ICharacter {
     const { data } = await Api.get<ICharacter|null>(`/metadata/characters/${id}`);
     return data ? new Character(data) : null;
   }
+
+  static async updateDetails(payload: {[key: string]: any}, signature: string): Promise<Character> {
+    const { data } = await Api.post<ICharacter>(`/character-update`, {payload, signature});
+    return new Character(data);
+  }
 }
 
 export default Character;

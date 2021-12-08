@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Grid,
+  Modal,
+  Paper,
   Button,
   Typography,
   CircularProgress
@@ -12,6 +14,7 @@ import { faEdit, faInfoCircle, faWallet } from '@fortawesome/free-solid-svg-icon
 import { Link } from 'react-router-dom';
 import Character from '../models/Character';
 import BubbleStatement from '../components/BubbleStatement';
+import ProfileForm from '../components/ProfileForm';
 import useMetaMask from '../hooks/useMetaMask';
 
 const ProfileWrapper = styled('div')({
@@ -45,6 +48,8 @@ const Profile = (props: {id: number}) => {
   const [character, setCharacter] = useState<Character|null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [showManageModal, setShowManageModal] = useState<boolean>(false);
+
   const {
     onboarding,
     connectWallet,
@@ -106,104 +111,130 @@ const Profile = (props: {id: number}) => {
           );
 
         return (
-          <Grid container height="100vh">
-            <Grid item xs={6} display="flex" flexDirection="column" px={5}>
-              <Grid container py={3} spacing={2} alignItems="center">
-                <Grid item>
-                  <Link to="/" style={{color: 'inherit', textDecoration: 'none'}}>
-                    <Typography className="brand-title" fontWeight="bold" variant="h6">
-                      Yamete Kudasai
-                    </Typography>
-                  </Link>
-                </Grid>
-                <>
+          <>
+            <Grid container height="100vh">
+              <Grid item xs={6} display="flex" flexDirection="column" px={5}>
+                <Grid container py={3} spacing={2} alignItems="center">
                   <Grid item>
-                    <Box ml={1}>|</Box>
+                    <Link to="/" style={{color: 'inherit', textDecoration: 'none'}}>
+                      <Typography className="brand-title" fontWeight="bold" variant="h6">
+                        Yamete Kudasai
+                      </Typography>
+                    </Link>
                   </Grid>
-                  <Grid item>
-                    {(() => {
-                      if (selectedAddress)
-                        return (
-                          <Box>
-                            <FontAwesomeIcon icon={faWallet} />
-                            <Box ml={1} display="inline-block">{selectedAddress}</Box>
-                          </Box>
-                        );
+                  <>
+                    <Grid item>
+                      <Box ml={1}>|</Box>
+                    </Grid>
+                    <Grid item>
+                      {(() => {
+                        if (selectedAddress)
+                          return (
+                            <Box fontSize="0.9em">
+                              <FontAwesomeIcon icon={faWallet} />
+                              <Box ml={1} display="inline-block">{selectedAddress}</Box>
+                            </Box>
+                          );
 
-                      return (
+                        return (
+                          <Button
+                            color="inherit"
+                            size="small"
+                            startIcon={<FontAwesomeIcon icon={faWallet} />}
+                            onClick={() => connectWallet()}
+                          >
+                            Connect to MetaMask
+                          </Button>
+                        );
+                      })()}
+                    </Grid>
+                  </>
+
+                </Grid>
+
+                <Box flex="1 0 auto" display="flex" alignItems="center">
+                  <Box pt={5} pl={5}>
+                    <Typography fontWeight="bold" variant="h2">{character.name}</Typography>
+                    <Typography fontWeight="normal" variant="h4">{character.description}</Typography>
+                    {(character.owner.toLowerCase() === selectedAddress?.toLowerCase()) && (
+                      <Box mt={2}>
                         <Button
+                          startIcon={<FontAwesomeIcon icon={faEdit} />}
+                          variant="outlined"
                           color="inherit"
                           size="small"
-                          startIcon={<FontAwesomeIcon icon={faWallet} />}
-                          onClick={() => connectWallet()}
+                          onClick={() => setShowManageModal(true)}
                         >
-                          Connect to MetaMask
+                          Manage Details
                         </Button>
-                      );
-                    })()}
-                  </Grid>
-                </>
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
 
-              </Grid>
+                <Box pb={3}>
+                  <Typography fontSize="0.9em">
+                    <b>Token ID: </b>
+                    <span>{character.id}</span>
+                  </Typography>
 
-              <Box flex="1 0 auto" display="flex" alignItems="center">
-                <Box pt={5} pl={5}>
-                  <Typography fontWeight="bold" variant="h2">{character.name}</Typography>
-                  <Typography fontWeight="normal" variant="h4">{character.description}</Typography>
-                  {(character.owner.toLowerCase() === selectedAddress?.toLowerCase()) && (
-                    <Box mt={2}>
-                      <Button
-                        startIcon={<FontAwesomeIcon icon={faEdit} />}
-                        variant="outlined"
-                        color="inherit"
-                        size="small"
-                      >
-                        Manage Details
-                      </Button>
-                    </Box>
+                  <Typography fontSize="0.9em">
+                    <b>Owner Address: </b>
+                    <span>{character.owner}</span>
+                  </Typography>
+
+                  {!isMetaMaskInstalled && (
+                    <Typography fontSize="0.9em">
+                      <FontAwesomeIcon icon={faInfoCircle} style={{marginRight: '4px'}} />
+                      <span>MetaMask is not installed in your browser. If you are the owner of <b>{character.name}</b>,</span>
+                      <span> you need to </span>
+                      <a href="/"
+                         style={{
+                           color: 'inherit',
+                           fontWeight: 'bold'
+                         }}
+                         onClick={e => {
+                           e.preventDefault();
+                           onboarding?.startOnboarding();
+                         }}
+                      >install MetaMask</a>
+                      <span> to manage her details.</span>
+                    </Typography>
                   )}
                 </Box>
-              </Box>
-
-              <Box pb={3}>
-                <Typography fontSize="0.9em">
-                  <b>Owner Address: </b>
-                  <span>{character.owner}</span>
-                </Typography>
-
-                <Typography fontSize="0.9em">
-                  <b>Contract Address: </b>
-                  <span>{character.owner}</span>
-                </Typography>
-
-                {!isMetaMaskInstalled && (
-                  <Typography fontSize="0.9em">
-                    <FontAwesomeIcon icon={faInfoCircle} style={{marginRight: '4px'}} />
-                    <span>MetaMask is not installed in your browser. If you are the owner of <b>{character.name}</b>,</span>
-                    <span> you need to </span>
-                    <a href="/"
-                       style={{
-                         color: 'inherit',
-                         fontWeight: 'bold'
-                       }}
-                       onClick={e => {
-                         e.preventDefault();
-                         onboarding?.startOnboarding();
-                       }}
-                    >install MetaMask</a>
-                    <span> to manage her details.</span>
-                  </Typography>
+              </Grid>
+              <Grid item xs={6} className="image-container" style={{backgroundImage: `url(${character.urls.image})`}}>
+                {!!character.statement && (
+                  <BubbleStatement style={{position: 'absolute', right: '72vh', top: '17vh'}}>
+                    {character.statement}
+                  </BubbleStatement>
                 )}
-              </Box>
+              </Grid>
             </Grid>
-            <Grid item xs={6} className="image-container" style={{backgroundImage: `url(${character.urls.image})`}}>
-              {!!character.statement && (
-                <BubbleStatement style={{position: 'absolute', right: '72vh', top: '17vh'}}>
-                  {character.statement}
-                </BubbleStatement>
-              )}
-            </Grid>
-          </Grid>
+
+            <Modal
+              open={showManageModal}
+              onClose={() => setShowManageModal(false)}
+            >
+              <Paper
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '75%',
+                  maxWidth: '575px',
+                  boxShadow: 24,
+                  padding: 2,
+                }}
+              >
+                <ProfileForm
+                  character={character}
+                  onCharacterChange={setCharacter}
+                />
+              </Paper>
+            </Modal>
+          </>
         );
       })()}
     </ProfileWrapper>
