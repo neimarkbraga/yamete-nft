@@ -30,8 +30,6 @@ const syncCharacter = async (data) => {
   const address = process.env.CONTRACT_ADDRESS;
   const provider = (() => {
     const network = process.env.BLOCKCHAIN_PROVIDER;
-    console.log(network);
-
     if (/^http/.test(network))
       return new ethers.providers.JsonRpcProvider(network);
     return ethers.getDefaultProvider(network);
