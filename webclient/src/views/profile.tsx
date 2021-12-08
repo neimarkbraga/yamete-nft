@@ -224,6 +224,8 @@ const Profile = (props: {id: number}) => {
                   transform: 'translate(-50%, -50%)',
                   width: '75%',
                   maxWidth: '575px',
+                  maxHeight: '98vh',
+                  overflow: 'auto',
                   boxShadow: 24,
                   padding: 2,
                 }}

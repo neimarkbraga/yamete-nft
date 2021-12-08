@@ -63,6 +63,16 @@ const getCharacter = async(id) => {
 
     app.use(express.static('../webclient/build'));
 
+    app.get('/config', async (req, res, next) => {
+      const { abi } = require('./smart_contract/build/YameteKudasai.json');
+      const { address } = require('./smart_contract/deployments/YameteKudasai.json');
+      try {
+        await res.json({address, abi});
+      } catch (e) {
+        next(e);
+      }
+    });
+
     app.get('/metadata/characters', async (req, res, next) => {
       try {
         res.setHeader('Content-Type', 'application/json');
@@ -121,6 +131,7 @@ const getCharacter = async(id) => {
     const server = app.listen(88, () => {
       console.log(`Server running @ port ${server.address().port}`);
     });
+
   } catch (e) {
     console.trace(e);
     process.exit();

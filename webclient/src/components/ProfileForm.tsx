@@ -17,6 +17,8 @@ import {
 import { styled } from '@mui/material/styles';
 import Character from '../models/Character';
 import useMetaMask from '../hooks/useMetaMask';
+import ContractFunctionForm from './ContractFunctionForm';
+import { useGlobals } from '../context/Globals';
 
 const ContentWrapper = styled('div')({
   position: 'relative',
@@ -131,7 +133,16 @@ const DetailsForm = (props: ProfileFormProps) => {
 };
 
 const NftForm = (props: ProfileFormProps) => {
+  const { character, onCharacterChange } = props;
   const [activePanel, setActivePanel] = useState<string>('');
+
+  const { config } = useGlobals();
+
+  const onSuccess = async (data: unknown) => {
+    console.log('Transaction success:', data);
+    const _character = await Character.findById(character.id);
+    if (_character) onCharacterChange(_character);
+  };
 
   const generateAccordionProps = (name: string): Partial<AccordionProps> => ({
     expanded: activePanel === name,
@@ -148,27 +159,10 @@ const NftForm = (props: ProfileFormProps) => {
           <Typography sx={{ color: 'text.secondary' }}>Approve an address to transfer token.</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box pb={2}>
-            <TextField
-              label="to"
-              size="small"
-              rows={4}
-              fullWidth
-            />
-          </Box>
-          <Box pb={2}>
-            <TextField
-              label="tokenId"
-              size="small"
-              rows={4}
-              fullWidth
-            />
-          </Box>
-          <Box display="flex" justifyContent="flex-end">
-            <Button variant="contained" size="small">
-              Transact
-            </Button>
-          </Box>
+          <ContractFunctionForm onSuccess={onSuccess} abi={config.abi} address={config.address} method="approve" fields={[
+            {name: 'to', type: 'string', required: true, value: ''},
+            {name: 'tokenId', type: 'number', required: true, readonly: true, value: character.id.toString()},
+          ]} />
         </AccordionDetails>
       </Accordion>
       <Accordion {...generateAccordionProps('safeTransferFrom')}>
@@ -179,43 +173,12 @@ const NftForm = (props: ProfileFormProps) => {
           <Typography sx={{ color: 'text.secondary' }}>Transfer token to an address.</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box pb={2}>
-            <TextField
-              label="from"
-              size="small"
-              rows={4}
-              fullWidth
-            />
-          </Box>
-          <Box pb={2}>
-            <TextField
-              label="to"
-              size="small"
-              rows={4}
-              fullWidth
-            />
-          </Box>
-          <Box pb={2}>
-            <TextField
-              label="tokenId"
-              size="small"
-              rows={4}
-              fullWidth
-            />
-          </Box>
-          <Box pb={2}>
-            <TextField
-              label="_data"
-              size="small"
-              rows={4}
-              fullWidth
-            />
-          </Box>
-          <Box display="flex" justifyContent="flex-end">
-            <Button variant="contained" size="small">
-              Transact
-            </Button>
-          </Box>
+          <ContractFunctionForm onSuccess={onSuccess} abi={config.abi} address={config.address} method="safeTransferFrom" fields={[
+            {name: 'from', type: 'string', required: true, readonly: true, value: character.owner},
+            {name: 'to', type: 'string', required: true, value: ''},
+            {name: 'tokenId', type: 'number', required: true, readonly: true, value: character.id.toString()},
+            /*{name: '_data', type: 'bytes', value: ''}*/
+          ]} />
         </AccordionDetails>
       </Accordion>
 

@@ -1,15 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, CssBaseline } from '@mui/material';
-import { MainTheme } from './themes';
+import { GlobalsProvider } from './context/Globals';
 
 import Home from './views/home';
 import Profile from './views/profile';
 
 function App() {
+
   return (
-    <ThemeProvider theme={MainTheme}>
-      <CssBaseline />
+    <GlobalsProvider>
       <div className="App">
         <BrowserRouter>
           <Routes>
@@ -22,7 +21,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
-    </ThemeProvider>
+    </GlobalsProvider>
   );
 }
 
