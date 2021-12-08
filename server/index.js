@@ -4,6 +4,8 @@ const express = require('express');
 const ethers = require('ethers');
 const bodyParser = require('body-parser');
 
+require('dotenv').config();
+
 const DATABASE_FILE = './characters.db.json';
 
 // get raw characters from database
@@ -25,8 +27,15 @@ const updateCharacter = (data) => {
 // syncs character owner from blockchain
 const syncCharacter = async (data) => {
   const { abi } = require('./smart_contract/build/YameteKudasai.json');
-  const { address } = require('./smart_contract/deployments/YameteKudasai.json');
-  const provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:7545');
+  const address = process.env.CONTRACT_ADDRESS;
+  const provider = (() => {
+    const network = process.env.BLOCKCHAIN_PROVIDER;
+    console.log(network);
+
+    if (/^http/.test(network))
+      return new ethers.providers.JsonRpcProvider(network);
+    return ethers.getDefaultProvider(network);
+  })();
   const contract = new ethers.Contract(address, abi, provider);
 
   data.owner = await contract.ownerOf(data.id);
@@ -65,7 +74,7 @@ const getCharacter = async(id) => {
 
     app.get('/config', async (req, res, next) => {
       const { abi } = require('./smart_contract/build/YameteKudasai.json');
-      const { address } = require('./smart_contract/deployments/YameteKudasai.json');
+      const address = process.env.CONTRACT_ADDRESS;
       try {
         await res.json({address, abi});
       } catch (e) {

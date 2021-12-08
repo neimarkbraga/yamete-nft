@@ -19,7 +19,7 @@ require('dotenv').config();
       const contract = await factory.deploy();
 
       if (!fs.existsSync(DEPLOYMENTS_FOLDER)) fs.mkdirSync(DEPLOYMENTS_FOLDER);
-      fs.writeFileSync(`${DEPLOYMENTS_FOLDER}/${file}`, JSON.stringify(contract, null, 2), 'utf8');
+      fs.writeFileSync(`${DEPLOYMENTS_FOLDER}/${new Date().getTime()}.${file}`, JSON.stringify(contract, null, 2), 'utf8');
 
       console.log('Deployment Done.');
     }

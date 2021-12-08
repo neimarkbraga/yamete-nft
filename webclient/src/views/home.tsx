@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import AnimeCard from '../components/AnimeCard';
 import Character from '../models/Character';
 import { styled, keyframes } from '@mui/material/styles';
+import { useGlobals } from '../context/Globals';
 
 const HomeWrapper = styled('div')({
   width: '100%',
@@ -30,6 +31,8 @@ const Home = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const { config } = useGlobals();
 
   const navigate = useNavigate();
 
@@ -102,6 +105,11 @@ const Home = () => {
           );
         })()}
       </Container>
+
+      <Box position="fixed" left="20px" bottom="20px">
+        <Typography fontSize="0.9em"><b>Contract address:</b> {config.address}</Typography>
+      </Box>
+
     </HomeWrapper>
   );
 };
