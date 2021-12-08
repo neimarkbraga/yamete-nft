@@ -90,6 +90,8 @@ const Home = () => {
               swipeToSlide={true}
               autoplay={false}
               centerPadding="25px"
+              initialSlide={Number(sessionStorage.getItem('yamete-slide-position') || 0)}
+              afterChange={(index) => sessionStorage.setItem('yamete-slide-position', index.toString())}
             >
               {characters.map(character => (
                 <AnimeCard
